@@ -22,7 +22,7 @@ public class UserController {
             String token = userService.registerUser(user);
             subscriptionService.createSubscription(user);
             Map<String, String> response = new HashMap<>();
-            response.put("token", token);
+            response.put("jwt", token);
             response.put("message", "User registered successfully!");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class UserController {
         String token = userService.loginUser(username, password);
         if (token != null) {
             Map<String, String> response = new HashMap<>();
-            response.put("token", token);
+            response.put("jwt", token);
             response.put("message", "Login successful!");
             return ResponseEntity.ok(response);
         }
