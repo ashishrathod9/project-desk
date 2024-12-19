@@ -13,7 +13,9 @@ const Signup = () => {
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = async (data) => {
-    dispatch(registeruser(data)) // Use dispatch to call the register action
+    dispatch(registeruser(data));
+    console.log("wieryf8rwytgw");
+     // Use dispatch to call the register action
   };
 
   return (
