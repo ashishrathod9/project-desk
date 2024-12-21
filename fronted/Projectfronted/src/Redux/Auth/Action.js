@@ -30,21 +30,23 @@ export const registeruser = (userData) => async (dispatch) => {
 export const login = (userData) => async (dispatch) => {
     dispatch({ type: LOGIN_REQUEST });
     try {
-        const { data } = await axios.post(getApiUrl("/api/users/login"), userData);
-
-        if (data.jwt) {
-            localStorage.setItem("jwt", data.jwt);
-            dispatch({ type: LOGIN_SUCCESS, payload: data });
-        }
-
-        console.log("LOGIN success", data);
+      console.log("Sending login request with data:", userData); // Log data before making the API request
+  
+      const { data } = await axios.post(getApiUrl("/api/users/login"), userData);
+  
+      if (data.jwt) {
+        localStorage.setItem("jwt", data.jwt);
+        dispatch({ type: LOGIN_SUCCESS, payload: data });
+      }
+  
+      console.log("LOGIN success", data);
     } catch (error) {
-        console.log(error);
+      console.error("Login error:", error);
     }
-};
+  };
 
 export const getUser = () => async (dispatch) => {
-    dispatch({ type: GET_USER_REQUEST });
+    dispatch({ type: GET_USER_SUCCESS });
     try {
         const { data } = await axios.get(getApiUrl("/api/users/profile"), {
             headers: {
@@ -52,12 +54,14 @@ export const getUser = () => async (dispatch) => {
             },
         });
 
-        if (data.jwt) {
-            localStorage.setItem("jwt", data.jwt);
-            dispatch({ type: GET_USER_SUCCESS, payload: data });
-        }
+        console.log("data in getuser",data);
+        
 
-        console.log("register success", data);
+        
+            dispatch({ type: GET_USER_SUCCESS, payload: data });
+        
+
+        console.log("User success", data);
     } catch (error) {
         console.log(error);
     }

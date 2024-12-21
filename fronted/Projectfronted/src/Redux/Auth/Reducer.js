@@ -1,7 +1,7 @@
 import { LOGOUT } from "./ActionTypes";
 
 const initialState = {
-  user: null,
+  username: null,
   loading: false,
   error: null,
   jwt: null,
