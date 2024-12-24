@@ -18,14 +18,20 @@ import {
   ACCEPT_INVITATION_REQUEST,
   ACCEPT_INVITATION_SUCCESS,
   ACCEPT_INVITATION_FAILURE,
-} from "./ActionTypes";
+} from "./ActionType";
 import { INVITE_TO_PROJECT_FAILURE, INVITE_TO_PROJECT_REQUEST, INVITE_TO_PROJECT_SUCCESS } from "./ActionType";
 
 // Fetch all projects
 export const fetchProjects = ({ category, tag }) => async (dispatch) => {
   dispatch({ type: FETCH_PROJECTS_REQUEST });
+  console.log(category);
+  console.log(tag);
+  
+  
   try {
     const { data } = await api.get("/api/projects", { params: { category, tag } });
+    console.log(data);
+    
     dispatch({ type: FETCH_PROJECTS_SUCCESS, projects: data });
   } catch (error) {
     console.log("error",error);
@@ -36,7 +42,7 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
 export const fetchProjectById = (id) => async (dispatch) => {
   dispatch({ type: FETCH_PROJECT_BY_ID_REQUEST });
   try {
-    const { data } = await api.get("/api/projects/"+id);
+    const { data } = await api.get(`http://localhost:8080/api/projects/${id}`);
     dispatch({ type: FETCH_PROJECT_BY_ID_SUCCESS, project: data });
   } catch (error) {
     dispatch({ type: FETCH_PROJECT_BY_ID_FAILURE, error: error.message });
@@ -47,12 +53,17 @@ export const fetchProjectById = (id) => async (dispatch) => {
 export const createProject = (projectData) => async (dispatch) => {
   dispatch({ type: CREATE_PROJECT_REQUEST });
   try {
-    const { data } = await api.post("/api/projects", projectData);
+    // Ensure the data format is correct
+    console.log("project", projectData);
+
+    const  data  = await api.post("http://localhost:8080/api/projects", projectData);
+    console.log("project", data);
     dispatch({ type: CREATE_PROJECT_SUCCESS, project: data });
   } catch (error) {
     dispatch({ type: CREATE_PROJECT_FAILURE, error: error.message });
   }
 };
+
 
 // Search for projects
 export const searchProjects = (keyword) => async (dispatch) => {

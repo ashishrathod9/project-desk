@@ -1,5 +1,5 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useDebugValue, useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Createcommentform from "../Createcommentform/Createcommentform";
@@ -13,12 +13,29 @@ import {
 } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { fetchIssueById, updateIssueStatus } from "../../Redux/Issue/Action";
+import { useDispatch, useSelector } from "react-redux";
+import { store } from "../../Redux/Store";
 
 const IssueDetails = () => {
   const { projectId, issueId } = useParams();
+  const {issue}=useSelector(store=>store)
+  const dispatch=useDispatch();
   const handleUpdateIssueStatus = (status) => {
-    console.log(status);
+    dispatch(updateIssueStatus( issueId,status))
   };
+
+
+
+
+
+
+
+
+
+  useEffect(()=>{
+    dispatch(fetchIssueById(issueId))
+  },[issueId])
 
   return (
     <div className="px-20 py-8 text-gray-400">
@@ -26,13 +43,12 @@ const IssueDetails = () => {
         <ScrollArea className="h-[80vh] w-[60%]">
           <div>
             <h1 className="text-lg font-semibold text-gray-400">
-              Add Dark Mode Toggle
+              {issue.issueDetails?.title}
             </h1>
 
             <div className="py-5">
               <h2 className="font-semibold text-gray-400">
-                Implement a dark mode toggle in the navigation bar. Users should
-                be able to switch between light and dark themes seamlessly.
+                {issue.issueDetails?.description}
               </h2>
             </div>
 
@@ -82,16 +98,20 @@ const IssueDetails = () => {
               <div className="space-y-7">
                 <div className="flex gap-10 items-center">
                   <p className="w-[7rem]">Assignee</p>
-                  <div className="flex items-center gap-3">
+                  {issue.issueDetails?.assignee?<div className="flex items-center gap-3">
                     <Avatar className="h-8 w-8 text-xs">
                       <AvatarFallback> A </AvatarFallback>
                     </Avatar>
                     <p>Code with Zosh</p>
-                  </div>
+                  </div>:<p></p>}
                 </div>
                 <div className="flex gap-10 items-center">
                   <p className="w-[7rem]">Label</p>
-                  <Badge>UI/UX</Badge>
+                  <Badge>{issue.issueDetails?.status}</Badge>
+                </div>
+                <div className="flex gap-10 items-center">
+                  <p className="w-[7rem]">Label</p>
+                  <Badge>{issue.issueDetails?.status}</Badge>
                 </div>
 
                 

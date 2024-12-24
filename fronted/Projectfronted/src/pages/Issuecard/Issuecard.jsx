@@ -17,15 +17,28 @@ import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { PersonIcon } from "@radix-ui/react-icons"; // Ensure the PersonIcon is correctly imported
 import Userlist from "../Userlist/Userlist";
 import { useNavigate } from "react-router-dom";
-
-const IssueCard = () => {
+import { useDispatch } from "react-redux";
+import { deleteIssue } from "../../Redux/Issue/Action";
+const IssueCard = ({item,projectId}) => {
+  const dispatch=useDispatch()
   const navigate=useNavigate()
+
+
+
+
+
+
+
+  const handleissuedelete=()=>{
+    dispatch(deleteIssue(item.id))
+  }
+
   return (
     <Card className="rounded-md py-1 pb-2">
       {/* Card Header */}
       <CardHeader className="py-0 pb-1">
         <div className="flex justify-between items-center">
-          <CardTitle onClick={()=> navigate("/project/3/issue/10")}>Create Navbar</CardTitle>
+          <CardTitle onClick={()=> navigate(`/project/${projectId}/issue/${item.id}`)}>{item.title}</CardTitle>
           {/* Dropdown Menu for Status/Actions */}
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -37,7 +50,7 @@ const IssueCard = () => {
               <DropdownMenuItem>In Progress</DropdownMenuItem>
               <DropdownMenuItem>Done</DropdownMenuItem>
               <DropdownMenuItem>Edit</DropdownMenuItem>
-              <DropdownMenuItem>Delete</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleissuedelete}>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -62,7 +75,7 @@ const IssueCard = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <Userlist/>
+              <Userlist issueDetails={item}/>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -11,9 +11,19 @@ import Issuecard from "../Issuecard/Issuecard";
 import CreateIssueForm from "../CreateIssueForm/CreateIssueForm";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@radix-ui/react-icons"; // Ensure the Button component is correctly imported
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchIssueById, fetchIssues } from "../../Redux/Issue/Action";
+import { store } from '../../Redux/Store';
 
 
 const IssueList = ({ title, status }) => {
+  const dispatch=useDispatch()
+  const {id}=useParams()
+  const {issue}=useSelector(store=>store)
+  useEffect(()=>{
+    dispatch(fetchIssues(id))
+  },[id])
   return (
     <div>
       <Dialog>
@@ -23,7 +33,7 @@ const IssueList = ({ title, status }) => {
           </CardHeader>
           <CardContent className="px-2">
             <div className="space-y-2">
-            {[1,1,1,1].map((item)=><Issuecard key={item} status={status} /> ) }
+            {issue.issues.filter((issue=>issue.status==status)).map((item)=><Issuecard projectId={id}  item={item} key={item} /> ) }
             </div>
           </CardContent>
           <CardFooter>
@@ -38,7 +48,7 @@ const IssueList = ({ title, status }) => {
           <DialogHeader>
             <DialogTitle>Create New Issue</DialogTitle>
           </DialogHeader>
-          <CreateIssueForm />
+          <CreateIssueForm status={status}/>
         </DialogContent>
       </Dialog>
     </div>

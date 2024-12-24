@@ -4,6 +4,7 @@ const initialState = {
   issues: [], // List of issues
   issue: null, // Single issue details
   loading: false,
+  issueDetails:null,
   error: null,
 };
 
@@ -13,7 +14,7 @@ const issueReducer = (state = initialState, action) => {
     case actionTypes.FETCH_ISSUE_REQUEST:
       return { ...state, loading: true, error: null };
     case actionTypes.FETCH_ISSUE_SUCCESS:
-      return { ...state, loading: false, issue: action.issue };
+      return { ...state, loading: false, issueDetails: action.issue };
     case actionTypes.FETCH_ISSUE_FAILURE:
       return { ...state, loading: false, error: action.error };
 

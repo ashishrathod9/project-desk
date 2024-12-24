@@ -9,12 +9,17 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
 import { Cross1Icon } from "@radix-ui/react-icons";
+import { useDispatch } from "react-redux";
+import { createProject } from "../../Redux/Project/Action";
 
-const tags = ["JavaScript", "React", "Node.js", "Python", "TypeScript", "Vue.js", "Angular", "CSS", "HTML"];
+const tags = [
+  "JavaScript", "React", "Node.js", "Python", "TypeScript", "Vue.js", "Angular", "CSS", "HTML"
+];
 
 const CreateProjectForm = () => {
+  const dispatch = useDispatch();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -30,8 +35,9 @@ const CreateProjectForm = () => {
   });
 
   const onSubmit = (data) => {
+    dispatch(createProject(data));
     console.log(data);
-  }
+  };
 
   return (
     <div>
@@ -104,8 +110,9 @@ const CreateProjectForm = () => {
                   <Select
                     value=""
                     onValueChange={(value) => {
-                      if (!fields.some(tag => tag.value === value)) {
-                        append({ value });
+                      // Append the value directly as a string, not as an object
+                      if (!fields.includes(value)) {
+                        append(value);  // Append string directly
                       }
                     }}
                   >
@@ -121,8 +128,9 @@ const CreateProjectForm = () => {
                 </FormControl>
                 <div className="flex gap-2 flex-wrap mt-2">
                   {fields.map((tag, index) => (
-                    <div key={tag.id} className="flex items-center rounded-full bg-gray-900 border border-violet-800 px-3 py-1">
-                      <span className="text-sm mr-1">{tag.value}</span>
+                    <div key={index} className="flex items-center rounded-full bg-gray-900 border border-violet-800 px-3 py-1">
+                      {/* Ensure `tag` is treated as a string */}
+                      <span className="text-sm mr-1">{typeof field === 'string' ? field : field?.value}</span>
                       <Cross1Icon
                         className="h-3 w-3 cursor-pointer"
                         onClick={() => remove(index)}
@@ -140,8 +148,7 @@ const CreateProjectForm = () => {
         </form>
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default CreateProjectForm
-
+export default CreateProjectForm;

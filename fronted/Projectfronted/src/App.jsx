@@ -10,6 +10,7 @@ import Auth from './pages/Auth/Auth';
 import SignupPage from './pages/Auth/Signup';
 import { store } from './Redux/Store';
 import { getUser } from './Redux/Auth/Action';
+import { fetchProjectById, fetchProjects } from './Redux/Project/Action';
 
 function App() {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getUser());
+    dispatch(fetchProjects({}))
   }, [auth.jwt]);
 
   console.log(auth);

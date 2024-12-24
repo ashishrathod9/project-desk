@@ -47,6 +47,8 @@ public class ProjectController {
             @RequestParam(required = false) String tag,
             @RequestHeader("Authorization") String authorizationHeader // Get token from header
     ) throws Exception {
+        System.out.println("Category: " + category); // Debugging log
+        System.out.println("Tag: " + tag); // Debugging log
         String email = extractEmailFromToken(authorizationHeader);
         if (email == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -126,16 +128,30 @@ public class ProjectController {
     @GetMapping("/search")
     public ResponseEntity<List<Project>> searchProjects(
             @RequestParam(required = false) String keyword,
-            @RequestHeader("Authorization") String authorizationHeader // Get token from header
-    ) throws Exception {
-        String email = extractEmailFromToken(authorizationHeader);
-        if (email == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            @RequestHeader("Authorization") String authorizationHeader) {
+        try {
+            // Extract email from JWT token
+            String email = extractEmailFromToken(authorizationHeader);
+            if (email == null) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            // Fetch user by email
+            User user = userService.findUserByEmail(email);
+            if (user == null) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            // Fetch projects
+            List<Project> projects = projectService.serachProjects(keyword, user);
+            return new ResponseEntity<>(projects, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        User user = userServiceforProjectImpl.findUserByEmail(email);
-        List<Project> projects = projectService.serachProjects(keyword, user);
-        return new ResponseEntity<>(projects, HttpStatus.OK);
     }
+
+
 
     // Endpoint to get chat by project ID
     @GetMapping("/{projectId}/chat")

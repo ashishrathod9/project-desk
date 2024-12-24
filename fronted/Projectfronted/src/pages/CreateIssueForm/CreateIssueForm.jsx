@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useId } from "react";
 import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {useDispatch} from "react-redux"
+import { createIssue } from "../../Redux/Issue/Action";
+import { useParams } from "react-router-dom";
 
-const CreateIssueForm = () => {
+const CreateIssueForm = ({status}) => {
+  const dispatch=useDispatch();
+  const {id}=useParams()
   const form = useForm({
     defaultValues: {
       name: "",
@@ -13,6 +18,8 @@ const CreateIssueForm = () => {
   });
 
   const onSubmit = (data) => {
+    data.projectId=id;
+    dispatch(createIssue({title : data.name,description: data.description,projectId:id,status,}))
     console.log("create issue data", data);
   }
 
