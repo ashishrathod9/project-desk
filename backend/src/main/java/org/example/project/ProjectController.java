@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/projects")
-public class ProjectController {
+public class   ProjectController {
 
     @Autowired
     private ProjectService projectService;
@@ -173,15 +173,31 @@ public class ProjectController {
     public ResponseEntity<MessageResponse> inviteProject(
             @RequestHeader("Authorization") String authorizationHeader, // Get token from header
             @RequestBody invitereq req
-    ) throws Exception {
-        String email = extractEmailFromToken(authorizationHeader);
-        if (email == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    ) {
+        try {
+            String email = extractEmailFromToken(authorizationHeader);
+            System.out.println("Email: " + email);
+            if (email == null) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+            User user = userServiceforProjectImpl.findUserByEmail(email);
+
+            // Ensure user exists before proceeding
+            if (user == null) {
+                return new ResponseEntity<>(new MessageResponse("User not found"), HttpStatus.NOT_FOUND);
+            }
+
+            // Send invitation
+            invitationService.sendInvitation(req.getEmail(), req.getProjectid());
+
+            // Response on success
+            return ResponseEntity.ok(new MessageResponse("Invite successful"));
+        } catch (Exception ex) {
+            // Log the error for debugging
+            ex.printStackTrace();
+            return new ResponseEntity<>(new MessageResponse("Invitation failed: " + ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        User user = userServiceforProjectImpl.findUserByEmail(email);
-        invitationService.sendInvitation(req.getEmail(),req.getProjectid());
-        MessageResponse messageResponse = new MessageResponse("Invite successful");
-        return new ResponseEntity<>(messageResponse, HttpStatus.OK);
     }
 
     // Endpoint to accept an invitation

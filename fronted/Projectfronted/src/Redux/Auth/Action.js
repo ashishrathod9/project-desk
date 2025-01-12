@@ -46,7 +46,7 @@ export const login = (userData) => async (dispatch) => {
   };
 
 export const getUser = () => async (dispatch) => {
-    dispatch({ type: GET_USER_SUCCESS });
+   dispatch({ type: GET_USER_REQUEST });
     try {
         const { data } = await axios.get(getApiUrl("/api/users/profile"), {
             headers: {
@@ -54,6 +54,8 @@ export const getUser = () => async (dispatch) => {
             },
         });
 
+        // const res=JSON.parse(data);
+        
         console.log("data in getuser",data);
         
 

@@ -39,7 +39,7 @@ const commentReducer = (state = initialState, action) => {
     case actionTypes.FETCH_COMMENTS_BY_ISSUE_REQUEST:
       return { ...state, loading: true, error: null };
     case actionTypes.FETCH_COMMENTS_BY_ISSUE_SUCCESS:
-      return { ...state, loading: false, comments: action.comments };
+      return { ...state, loading: false, comments: action.payload };
     case actionTypes.FETCH_COMMENTS_BY_ISSUE_FAILURE:
       return { ...state, loading: false, error: action.error };
 

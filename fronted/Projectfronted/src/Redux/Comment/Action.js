@@ -1,5 +1,5 @@
 // commentActions.js
-import * as actionTypes from "./ActionTypes";
+import * as actionTypes from "./ActionType";
 import axios from "axios";
 
 // Create Comment
@@ -7,12 +7,29 @@ export const createComment = (commentData) => async (dispatch) => {
   dispatch({ type: actionTypes.CREATE_COMMENT_REQUEST });
 
   try {
-    const response = await axios.post("/api/comments", commentData, {
-    });
+    const token = (localStorage.getItem("jwt") || "").trim();  // Or retrieve the JWT token however you're storing it
+    const response = await axios.post(
+      "http://localhost:8080/api/comments",
+      commentData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the request
+        },
+      }
+    );
+
     dispatch({
       type: actionTypes.CREATE_COMMENT_SUCCESS,
       payload: response.data,
     });
+
+
+
+
+
+
+    console.log("this is cdata",response.data);
+    
   } catch (error) {
     dispatch({
       type: actionTypes.CREATE_COMMENT_FAILURE,
@@ -21,13 +38,17 @@ export const createComment = (commentData) => async (dispatch) => {
   }
 };
 
+
 // Delete Comment
 export const deleteComment = (commentId) => async (dispatch) => {
   dispatch({ type: actionTypes.DELETE_COMMENT_REQUEST });
 
   try {
-    const response = await axios.delete(`/api/comments/${commentId}`, {
-      
+    const token = (localStorage.getItem("jwt") || "").trim();  // Or retrieve the JWT token however you're storing it
+    const response = await axios.delete(`http://localhost:8080/api/comments/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the token in the request
+      },
     });
     dispatch({
       type: actionTypes.DELETE_COMMENT_SUCCESS,
@@ -46,15 +67,33 @@ export const fetchCommentsByIssueId = (issueId) => async (dispatch) => {
   dispatch({ type: actionTypes.FETCH_COMMENTS_BY_ISSUE_REQUEST });
 
   try {
-    const response = await axios.get(`/api/comments/${issueId}`);
+    // Retrieve JWT token from localStorage
+    const token = (localStorage.getItem("jwt") || "").trim();
+
+    // Send GET request with the Authorization header
+    const response = await axios.get(`http://localhost:8080/api/comments/${issueId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`, // Include the JWT token
+      },
+    });
+
+    // Dispatch success action with response data
     dispatch({
       type: actionTypes.FETCH_COMMENTS_BY_ISSUE_SUCCESS,
       payload: response.data,
     });
+
+    // Log the data for debugging
+    console.log("This is all comments data:", response.data);
   } catch (error) {
+    // Dispatch failure action with error details
     dispatch({
       type: actionTypes.FETCH_COMMENTS_BY_ISSUE_FAILURE,
       error: error.response ? error.response.data : "Network Error",
     });
+
+    // Log the error for debugging
+    console.error("Error fetching comments:", error);
   }
 };
+

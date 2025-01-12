@@ -62,7 +62,7 @@ const Navbar = () => {
                 </DropdownMenuContent>
                 
             </DropdownMenu>
-            <p>{auth.user?.username}</p>
+            <p>{auth.username?.username}</p>
         </div>
 
       

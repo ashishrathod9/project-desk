@@ -18,7 +18,8 @@ public class EmailServiceImpl implements EmailService {
         MimeMessageHelper mimeMessageHelper=new MimeMessageHelper(mimeMessage,"utf-8");
          String subject="Project team";
          String text="click here"+link;
-
+         System.out.println(text);
+         System.out.println(userEmail);
          mimeMessageHelper.setSubject(subject);
          mimeMessageHelper.setText(text,true);
          mimeMessageHelper.setTo(userEmail);

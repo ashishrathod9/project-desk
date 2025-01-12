@@ -1,18 +1,23 @@
 import api from "@/config/api";
-import * as actionTypes from "./ActionTypes";
+import * as actionTypes from "./ActionType";
 
 export const sendMessage = (messageData) => {
     return async (dispatch) => {
+        console.log(messageData);
+        
         dispatch({ type: actionTypes.SEND_MESSAGE_REQUEST });
         try {
             const response = await api.post(
-                "/api/messages/send",
+                "http://localhost:8080/api/project/send",
                 messageData
             );
             dispatch({
                 type: actionTypes.SEND_MESSAGE_SUCCESS,
                 message: response.data,
             });
+
+            console.log("this is chat",response.data);
+            
         } catch (error) {
             dispatch({
                 type: actionTypes.SEND_MESSAGE_FAILURE,
@@ -32,7 +37,10 @@ export const fetchChatByProject = (projectId) => {
             dispatch({
                 type: actionTypes.FETCH_CHAT_BY_PROJECT_SUCCESS,
                 chat: response.data,
+                messages:response.data.messages
             });
+            console.log("this is chats",response.data);
+            
         } catch (error) {
             dispatch({
                 type: actionTypes.FETCH_CHAT_BY_PROJECT_FAILURE,
@@ -51,7 +59,7 @@ export const fetchChatMessages = (chatId) => {
       dispatch({
         type: actionTypes.FETCH_CHAT_MESSAGES_SUCCESS,
         chatId,
-        messages: response.data,
+        chat: response.data,
       });
     } catch (error) {
       console.log("error--", error);

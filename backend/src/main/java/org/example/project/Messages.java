@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +26,7 @@ public class Messages {
     private User sender;
 
     @ManyToOne
+    @JsonBackReference // Prevent infinite recursion
     private Chat chat;
 
     public void setId(Long id) {

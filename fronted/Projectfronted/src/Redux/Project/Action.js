@@ -89,30 +89,53 @@ export const deleteProject = ({id}) => async (dispatch) => {
 };
 
 // Invite a user to a project
-export const inviteToProject = ({email, projectId}) => async (dispatch) => {
+export const inviteToProject = ({ email, projectid }) => async (dispatch) => {
   dispatch({ type: INVITE_TO_PROJECT_REQUEST });
   try {
-    const { data } = await api.post("/api/projects/invite",{email,projectId});
+    console.log("email :",email);
+    
+    const { data } = await api.post("http://localhost:8080/api/projects/invite", {
+      email,
+      projectid,
+    });
     dispatch({ type: INVITE_TO_PROJECT_SUCCESS, payload: data });
+    console.log("sucess");
+    
   } catch (error) {
     dispatch({ type: INVITE_TO_PROJECT_FAILURE, error: error.message });
+    console.error("Failed to invite to project:", error.message);
   }
 };
 
 // Accept an invitation
-export const acceptInvitation = ({invitationToken,navigate}) => async (dispatch) => {
-  dispatch({ type: ACCEPT_INVITATION_REQUEST });
+export const acceptInvitation = ({ token, navigate }) => async (dispatch) => {
+  dispatch({ type: "ACCEPT_INVITATION_REQUEST" });
+  console.log(token);
+  
+
   try {
-    const { data } = await api.get("/api/projects/accept_invitation", {
-        params:{
-            token:invitationToken
-        }
+    const Token = (localStorage.getItem("jwt") || "").trim(); // Retrieve the JWT token
+
+    const { data } = await api.get("http://localhost:8080/api/projects/accept-invitation", {
+      params: {
+        token: token,
+      },
+      headers: {
+        Authorization: `Bearer ${Token}`, // Correct string interpolation for Bearer token
+      },
     });
 
-    navigate("/project"+data.projectId)
-    
-    dispatch({ type: ACCEPT_INVITATION_SUCCESS, invitation: data });
+    // Navigate to the project page
+    console.log("before navigation");
+    navigate("/project/" + data.projectid);
+
+    // Dispatch success action
+    dispatch({ type: "ACCEPT_INVITATION_SUCCESS", invitation: data });
+    console.log("success");
   } catch (error) {
-    dispatch({ type: ACCEPT_INVITATION_FAILURE, error: error.message });
+    // Dispatch failure action
+    dispatch({ type: "ACCEPT_INVITATION_FAILURE", error: error.message });
   }
 };
+
+

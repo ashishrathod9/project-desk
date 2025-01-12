@@ -17,20 +17,24 @@ const authReducer = (state = initialState, action) => {
       return { ...state, loading: true, error: null };
 
     case "GET_USER_REQUEST":
+      console.log("Inside GET_USER_REQ");
       return { ...state, loading: true, error: null };
 
     case "REGISTER_SUCCESS":
-      return { ...state, loading: false, error: null, jwt: action.payload.jwt };
+      console.log("Inside REGISTER_SUCCESS");
+      return { ...state, loading: false, error: null, jwt: action.payload.jwt , username: action.payload };
 
     case "LOGIN_SUCCESS":
       console.log(action.payload)
-      return { ...state, loading: false, error: null, jwt: action.payload.jwt };
+      return { ...state, loading: false, error: null, jwt: action.payload.jwt , username: action.payload };
 
     case "GET_USER_SUCCESS":
-      return { ...state, loading: false, error: null, user: action.payload };
+      console.log("Inside GET_USER_SUCCESS");
+      return { ...state, loading: false, error: null, username: action.payload };
 
-    case LOGOUT:
-      return initialState;
+    case "LOGOUT":
+      console.log("Inside LOGOUT");
+      return {...state,username:null,loading:false};
 
     default:
       return state; // Explicitly return the current state
