@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import './App.css';
-import Home from './pages/Home/home';
+import Home from './pages/Home/Home';
 import Navbar from './pages/Navbar/Navbar';
 import ProjectDetails from './pages/ProjectDetails/ProjectDetails';
 import Issuedetails from './pages/Issuedetails/Issuedetails';
