@@ -16,8 +16,8 @@ const Createcommentform = ({issueId}) => {
     }
   });
 
-  const onSubmit = (data) => {
-    dispatch(createComment({content:data.content,issueId}))
+  const onSubmit = async(data) => {
+    await dispatch(createComment({content:data.content,issueId}))
     console.log("create issue data", data);
   }
 

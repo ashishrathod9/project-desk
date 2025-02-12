@@ -7,6 +7,7 @@ import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchChatByProject, sendMessage } from "../../Redux/Chat/Action";
 import { useParams } from "react-router-dom";
+import { getUser } from "../../Redux/Auth/Action";
 
 const ChatBox = () => {
   const [message, setMessage] = useState("");
@@ -21,6 +22,7 @@ const ChatBox = () => {
       dispatch(fetchChatByProject(id));
       
     }
+    
   }, [id, dispatch]);
 
   const handleMessageChange = (e) => {
@@ -52,7 +54,7 @@ const ChatBox = () => {
         <ScrollArea className="flex-grow p-5">
           <div className="flex flex-col gap-3">
             {chat.messages?.map((item, index) =>
-              item.sender.id!=auth.username.id ? (
+              true ? (
                 // Left-aligned message
                 <div className="flex gap-2 mb-2 justify-start" key={index}>
                   <Avatar>

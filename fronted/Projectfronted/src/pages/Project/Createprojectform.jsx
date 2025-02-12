@@ -1,25 +1,28 @@
-import React from "react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { Form, FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import React from "react"
+import { useForm } from "react-hook-form"
+import { Form, FormField, FormItem, FormControl, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Cross1Icon } from "@radix-ui/react-icons";
-import { useDispatch } from "react-redux";
-import { createProject } from "../../Redux/Project/Action";
+} from "@/components/ui/select"
+import { X } from 'lucide-react'
+import { useDispatch } from "react-redux"
+import { createProject } from "../../Redux/Project/Action"
+import { useNavigate } from "react-router-dom"
 
 const tags = [
-  "JavaScript", "React", "Node.js", "Python", "TypeScript", "Vue.js", "Angular", "CSS", "HTML"
-];
+  "JavaScript", "React", "Node.js", "Python", "Spring Boot", "Vue.js", "Angular", "CSS", "HTML"
+]
 
-const CreateProjectForm = () => {
-  const dispatch = useDispatch();
+const CreateProjectForm = ({ onClose }) => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  
   const form = useForm({
     defaultValues: {
       name: "",
@@ -27,22 +30,40 @@ const CreateProjectForm = () => {
       category: "",
       tags: []
     }
-  });
+  })
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "tags"
-  });
+  const selectedTags = form.watch("tags")
 
-  const onSubmit = (data) => {
-    dispatch(createProject(data));
-    console.log(data);
-  };
+  const onSubmit = async (data) => {
+    try {
+      await dispatch(createProject(data))
+      form.reset()
+      if (onClose) {
+        onClose()
+      }
+      navigate("/projects")
+    } catch (error) {
+      console.error("Error creating project:", error)
+    }
+  }
+
+  const handleTagSelect = (value) => {
+    if (value && !selectedTags.includes(value)) {
+      form.setValue("tags", [...selectedTags, value])
+    }
+  }
+
+  const removeTag = (tagToRemove) => {
+    form.setValue(
+      "tags",
+      selectedTags.filter((tag) => tag !== tagToRemove)
+    )
+  }
 
   return (
-    <div>
+    <div className="w-full max-w-2xl mx-auto">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="name"
@@ -52,7 +73,7 @@ const CreateProjectForm = () => {
                   <Input
                     {...field}
                     type="text"
-                    className="border w-full border-gray-700 py-5 px-5 mb-4"
+                    className="border border-gray-700 py-5 px-5"
                     placeholder="Project name..."
                   />
                 </FormControl>
@@ -69,7 +90,7 @@ const CreateProjectForm = () => {
                   <Input
                     {...field}
                     type="text"
-                    className="border w-full border-gray-700 py-5 px-5 mb-4"
+                    className="border border-gray-700 py-5 px-5"
                     placeholder="Project description..."
                   />
                 </FormControl>
@@ -87,7 +108,7 @@ const CreateProjectForm = () => {
                     value={field.value}
                     onValueChange={field.onChange}
                   >
-                    <SelectTrigger className="w-full border border-gray-700 py-5 px-5 mb-4">
+                    <SelectTrigger className="border border-gray-700 py-5 px-5">
                       <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -104,36 +125,32 @@ const CreateProjectForm = () => {
           <FormField
             control={form.control}
             name="tags"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormControl>
-                  <Select
-                    value=""
-                    onValueChange={(value) => {
-                      // Append the value directly as a string, not as an object
-                      if (!fields.includes(value)) {
-                        append(value);  // Append string directly
-                      }
-                    }}
-                  >
-                    <SelectTrigger className="w-full border border-gray-700 py-5 px-5 mb-4">
-                      <SelectValue placeholder="Tags" />
+                  <Select onValueChange={handleTagSelect}>
+                    <SelectTrigger className="border border-gray-700 py-5 px-5">
+                      <SelectValue placeholder="Select tags" />
                     </SelectTrigger>
                     <SelectContent>
-                      {tags.map((item) => (
-                        <SelectItem key={item} value={item}>{item}</SelectItem>
+                      {tags.filter(tag => !selectedTags.includes(tag)).map((tag) => (
+                        <SelectItem key={tag} value={tag}>
+                          {tag}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
                 <div className="flex gap-2 flex-wrap mt-2">
-                  {fields.map((tag, index) => (
-                    <div key={index} className="flex items-center rounded-full bg-gray-900 border border-violet-800 px-3 py-1">
-                      {/* Ensure `tag` is treated as a string */}
-                      <span className="text-sm mr-1">{typeof field === 'string' ? field : field?.value}</span>
-                      <Cross1Icon
-                        className="h-3 w-3 cursor-pointer"
-                        onClick={() => remove(index)}
+                  {selectedTags.map((tag) => (
+                    <div
+                      key={tag}
+                      className="flex items-center gap-1 rounded-full bg-gray-900 border border-violet-800 px-3 py-1"
+                    >
+                      <span className="text-sm">{tag}</span>
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-red-500 transition-colors"
+                        onClick={() => removeTag(tag)}
                       />
                     </div>
                   ))}
@@ -142,13 +159,13 @@ const CreateProjectForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full my-5">
+          <Button type="submit" className="w-full">
             Create Project
           </Button>
         </form>
       </Form>
     </div>
-  );
-};
+  )
+}
 
-export default CreateProjectForm;
+export default CreateProjectForm

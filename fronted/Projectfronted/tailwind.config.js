@@ -9,6 +9,14 @@ module.exports = {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+
+		keyframes: {
+		blink: {
+			'0%, 100%': { opacity: 0 },
+			'50%': { opacity: 1 },
+			}
+		},
+		
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

@@ -12,7 +12,7 @@ import AcceptInvitation from './pages/Acceptinvitation/Acceptinvitation';
 import { store } from './Redux/Store';
 import { getUser } from './Redux/Auth/Action';
 import { fetchProjectById, fetchProjects } from './Redux/Project/Action';
-
+import { PersistGate } from "redux-persist/integration/react";
 function App() {
   const dispatch = useDispatch();
   const { auth } = useSelector((store) => store);
@@ -44,7 +44,7 @@ function App() {
           </>
         ) : (
           <>
-            <Route path="/auth" element={<Auth />} />
+            <Route path="/" element={<Auth />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="*" element={<Navigate to="/auth" replace />} />
           </>

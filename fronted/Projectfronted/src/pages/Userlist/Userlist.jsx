@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useSelector, useDispatch } from "react-redux";
 import { assignIssueToUser } from "../../Redux/Issue/Action";
 import { useParams } from "react-router-dom";
 
-const Userlist = ({issueDetails}) => {
-  const { project } = useSelector((store) => store);
-
-  const dispatch = useDispatch();
-
+const Userlist = ({issueDetails,project}) => {
   
+  
+  
+  const dispatch=useDispatch();
+
+console.log(project);
+
+
+// console.log(res);
+
 
 
   // Handle user click to assign the issue
@@ -30,7 +35,9 @@ const Userlist = ({issueDetails}) => {
 
       {/* User List */}
       <p className="text-gray-400">Click a user to assign the issue:</p>
-      {project.projectDetails?.team.map((user) => (
+      {console.log(project)
+      }
+      {project?.team?.map((user) => (
         <div
           key={user.id}
           onClick={() => handleAssignUser(user.id)} // Assign issue on click
@@ -47,6 +54,6 @@ const Userlist = ({issueDetails}) => {
       ))}
     </div>
   );
-};
+}
 
 export default Userlist;

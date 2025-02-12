@@ -19,16 +19,11 @@ import Userlist from "../Userlist/Userlist";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteIssue } from "../../Redux/Issue/Action";
-const IssueCard = ({item,projectId}) => {
+const IssueCard = ({item,projectId,project}) => {
+  console.log(project);
+  
   const dispatch=useDispatch()
   const navigate=useNavigate()
-
-
-
-
-
-
-
   const handleissuedelete=()=>{
     dispatch(deleteIssue(item.id))
   }
@@ -72,7 +67,7 @@ const IssueCard = ({item,projectId}) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <Userlist issueDetails={item}/>
+              <Userlist issueDetails={item} project={project}/>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
