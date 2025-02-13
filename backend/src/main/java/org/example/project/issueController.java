@@ -64,14 +64,13 @@ public class issueController {
             Issue createdIssue = issueService.createIssue(issue, user);
             issuedto issueDTO = new issuedto();
             issueDTO.setDescription(createdIssue.getDescription());
-            issueDTO.setDueDate(createdIssue.getDueDate());
+
             issueDTO.setId(createdIssue.getId());
-            issueDTO.setPriority(createdIssue.getPriority());
+
             issueDTO.setProject(createdIssue.getProject());
             issueDTO.setProjectId(createdIssue.getProjectID());
             issueDTO.setStatus(createdIssue.getStatus());
             issueDTO.setTitle(createdIssue.getTitle());
-            issueDTO.setTags(createdIssue.getTags());
             issueDTO.setAssignee(createdIssue.getAssignee());
             return ResponseEntity.ok(issueDTO);
 
