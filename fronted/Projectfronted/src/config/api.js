@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const API_BASE_URL="http://localhost:8080"
+export const API_BASE_URL="https://project-demo-image1-tag1.onrender.com"
 
 const api=axios.create({baseURL:API_BASE_URL})
 const jwt=localStorage.getItem("jwt");

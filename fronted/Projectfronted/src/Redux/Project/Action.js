@@ -29,7 +29,7 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
   
   
   try {
-    const { data } = await api.get("/api/projects", { params: { category, tag } });
+    const { data } = await api.get("https://project-demo-image1-tag1.onrender.com/api/projects", { params: { category, tag } });
     console.log(data);
     
     dispatch({ type: FETCH_PROJECTS_SUCCESS, projects: data });
@@ -42,7 +42,7 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
 export const fetchProjectById = (id) => async (dispatch) => {
   dispatch({ type: FETCH_PROJECT_BY_ID_REQUEST });
   try {
-    const { data } = await api.get(`http://localhost:8080/api/projects/${id}`);
+    const { data } = await api.get(`https://project-demo-image1-tag1.onrender.com/api/projects/${id}`);
     dispatch({ type: FETCH_PROJECT_BY_ID_SUCCESS, project: data });
   } catch (error) {
     dispatch({ type: FETCH_PROJECT_BY_ID_FAILURE, error: error.message });
@@ -56,7 +56,7 @@ export const createProject = (projectData) => async (dispatch) => {
     // Ensure the data format is correct
     console.log("project", projectData);
 
-    const  data  = await api.post("http://localhost:8080/api/projects", projectData);
+    const  data  = await api.post("https://project-demo-image1-tag1.onrender.com/api/projects", projectData);
     console.log("project", data);
     dispatch({ type: CREATE_PROJECT_SUCCESS, project: data });
   } catch (error) {
@@ -69,7 +69,7 @@ export const createProject = (projectData) => async (dispatch) => {
 export const searchProjects = (keyword) => async (dispatch) => {
   dispatch({ type: SEARCH_PROJECT_REQUEST });
   try {
-    const { data } = await api.get("/api/projects/search?keyword="+keyword);
+    const { data } = await api.get("https://project-demo-image1-tag1.onrender.com/api/projects/search?keyword="+keyword);
     dispatch({ type: SEARCH_PROJECT_SUCCESS, projects: data });
     console.log("search projects",data)
   } catch (error) {
@@ -81,7 +81,7 @@ export const searchProjects = (keyword) => async (dispatch) => {
 export const deleteProject = ({id}) => async (dispatch) => {
   dispatch({ type: DELETE_PROJECT_REQUEST });
   try {
-    await api.delete("/api/projects/"+id);
+    await api.delete("https://project-demo-image1-tag1.onrender.com/api/projects/"+id);
     dispatch({ type: DELETE_PROJECT_SUCCESS, projectId: id });
   } catch (error) {
     dispatch({ type: DELETE_PROJECT_FAILURE, error: error.message });
@@ -94,7 +94,7 @@ export const inviteToProject = ({ email, projectid }) => async (dispatch) => {
   try {
     console.log("email :",email);
     
-    const { data } = await api.post("http://localhost:8080/api/projects/invite", {
+    const { data } = await api.post("https://project-demo-image1-tag1.onrender.com/api/projects/invite", {
       email,
       projectid,
     });
@@ -116,7 +116,7 @@ export const acceptInvitation = ({ token, navigate }) => async (dispatch) => {
   try {
     const Token = (localStorage.getItem("jwt") || "").trim(); // Retrieve the JWT token
 
-    const { data } = await api.get("http://localhost:8080/api/projects/accept-invitation", {
+    const { data } = await api.get("https://project-demo-image1-tag1.onrender.com/api/projects/accept-invitation", {
       params: {
         token: token,
       },
