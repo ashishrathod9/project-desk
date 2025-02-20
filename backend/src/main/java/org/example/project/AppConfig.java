@@ -66,7 +66,10 @@ public class AppConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("https://project-desk-ndtw.vercel.app"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "https://project-desk-ndtw.vercel.app",  // removed trailing slash
+                "https://project-demo-image1-tag1.onrender.com"  // added backend domain
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowCredentials(true);
         configuration.setAllowedHeaders(Arrays.asList(
