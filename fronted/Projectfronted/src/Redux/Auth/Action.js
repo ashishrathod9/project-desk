@@ -14,7 +14,7 @@ const getApiUrl = (endpoint) => {
 export const registeruser = (userData) => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST });
     try {
-        const { data } = await axios.post(getApiUrl("/api/users/signup"), userData);
+        const { data } = await axios.post(getApiUrl("https://project-demo-image1-tag1.onrender.com/api/users/signup"), userData);
 
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt);
@@ -32,7 +32,7 @@ export const login = (userData) => async (dispatch) => {
     try {
       console.log("Sending login request with data:", userData); // Log data before making the API request
   
-      const { data } = await axios.post(getApiUrl("/api/users/login"), userData);
+      const { data } = await axios.post(getApiUrl("https://project-demo-image1-tag1.onrender.com/api/users/login"), userData);
   
       if (data.jwt) {
         localStorage.setItem("jwt", data.jwt);
@@ -48,7 +48,7 @@ export const login = (userData) => async (dispatch) => {
 export const getUser = () => async (dispatch) => {
    dispatch({ type: GET_USER_REQUEST });
     try {
-        const { data } = await axios.get(getApiUrl("/api/users/profile"), {
+        const { data } = await axios.get(getApiUrl("https://project-demo-image1-tag1.onrender.com/api/users/profile"), {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
             },
