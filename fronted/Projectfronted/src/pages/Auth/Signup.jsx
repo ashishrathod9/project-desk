@@ -332,7 +332,7 @@ export default function SignupPage({ setShowAuth, setIsSignupActive }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-lg font-semibold tracking-wide">
-                    Full Name
+                    Username
                   </FormLabel>
                   <FormControl>
                     <Input
