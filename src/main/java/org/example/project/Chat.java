@@ -1,5 +1,6 @@
 package org.example.project;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,11 +24,12 @@ public class Chat {
     @OneToOne
     private Project project;
 
-    @OneToMany(mappedBy = "chat",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Messages> messages;
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // Forward part of the relationship
+    private List<Messages> messages = new ArrayList<>();
 
     @OneToMany
-    private List<User> users=new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     public void setId(Long id) {
         this.id = id;

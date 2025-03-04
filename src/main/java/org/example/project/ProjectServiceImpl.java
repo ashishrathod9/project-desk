@@ -40,20 +40,22 @@ public class ProjectServiceImpl implements ProjectService {
         return savedProject;
     }
 
-    @Override
-    public List<Project> getProjectByTeam(User user, String category, String tag) throws Exception {
-        List<Project> projects=projectRepository.findByTeamContainingOrOwner(user,user);
-        if(category!=null)
-        {
-            projects=projects.stream().filter(project -> project.getCategory().equals(category)).collect(Collectors.toList());
-        }
+        @Override
+        public List<Project> getProjectByTeam(User user, String category, String tag) throws Exception {
+            List<Project> projects=projectRepository.findByTeamContainingOrOwner(user,user);
+            System.out.println(projects.size());
+            System.out.println(category+':'+tag);
+            if (category != null && !category.equals("All")) {
+                projects = projects.stream().filter(project -> project.getCategory().equals(category)).collect(Collectors.toList());
+            }
 
-        if(tag!=null)
-        {
-            projects=projects.stream().filter(project -> project.getCategory().contains(tag)).collect(Collectors.toList());
+            if (tag != null && !tag.equals("All")) {
+                projects = projects.stream().filter(project -> project.getTags().contains(tag)).collect(Collectors.toList());
+            }
+            System.out.println(projects.size());
+
+            return projects;
         }
-        return projects;
-    }
 
     public Project getProjectById(Long projectId) {
         return projectRepository.findById(projectId)
@@ -112,7 +114,6 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> serachProjects(String keyword, User user) throws Exception {
 
-
-        return projectRepository.findByNameContainingAndTeamContaining(keyword, user);
+        return projectRepository.findByNameContainingAndTeamContains(keyword, user);
     }
 }

@@ -10,7 +10,6 @@ public class issueRequest {
     private String description;
     private String status;
     private Long projectId;
-    private String priority;
-    private LocalDate dueDate;
+
 
 }

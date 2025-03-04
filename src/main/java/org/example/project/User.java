@@ -15,6 +15,14 @@ public class User {
     private String email;
     private String password;
     private int ProjectSize;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 
     public String getEmail() {
         return email;

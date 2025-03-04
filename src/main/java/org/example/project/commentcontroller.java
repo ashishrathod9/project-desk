@@ -23,8 +23,19 @@ public class commentcontroller {
     @PostMapping
     public ResponseEntity<Comment> createComment(
             @RequestBody commentreq req,
-            @RequestHeader("Authorization") String jwt) throws Exception {
-        String email = jwtutils.extractEmailFromToken(jwt);
+            @RequestHeader("Authorization") String authorizationHeader
+    ) throws Exception {
+        String token = authorizationHeader.replace("Bearer ", "").trim();
+
+        if (token.isEmpty()) {
+            throw new RuntimeException("Authorization token is empty");
+        }
+
+        if (!token.matches("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_.+/=]*$")) {
+            throw new RuntimeException("Invalid JWT structure");
+        }
+
+        String email = jwtutils.extractEmailFromToken(token);
         if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -40,8 +51,18 @@ public class commentcontroller {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<MessageResponse> deleteComment(
             @PathVariable Long commentId,
-            @RequestHeader("Authorization") String jwt) throws Exception {
-        String email = jwtutils.extractEmailFromToken(jwt);
+            @RequestHeader("Authorization") String authorizationHeader) throws Exception {
+        String token = authorizationHeader.replace("Bearer ", "").trim();
+
+        if (token.isEmpty()) {
+            throw new RuntimeException("Authorization token is empty");
+        }
+
+        if (!token.matches("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_.+/=]*$")) {
+            throw new RuntimeException("Invalid JWT structure");
+        }
+
+        String email = jwtutils.extractEmailFromToken(token);
         if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -54,9 +75,12 @@ public class commentcontroller {
     }
 
     @GetMapping("/{issueId}")
-    public ResponseEntity<List<Comment>> getCommentsByIssueId(
-            @PathVariable Long issueId) {
+    public ResponseEntity<List<Comment>> getCommentsByIssueId(@PathVariable Long issueId) {
+        System.out.println("Received issueId: " + issueId);
         List<Comment> comments = commentService.findCommentByIssueId(issueId);
+        if (comments.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 }

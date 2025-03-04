@@ -64,14 +64,13 @@ public class issueController {
             Issue createdIssue = issueService.createIssue(issue, user);
             issuedto issueDTO = new issuedto();
             issueDTO.setDescription(createdIssue.getDescription());
-            issueDTO.setDueDate(createdIssue.getDueDate());
+
             issueDTO.setId(createdIssue.getId());
-            issueDTO.setPriority(createdIssue.getPriority());
+
             issueDTO.setProject(createdIssue.getProject());
             issueDTO.setProjectId(createdIssue.getProjectID());
             issueDTO.setStatus(createdIssue.getStatus());
             issueDTO.setTitle(createdIssue.getTitle());
-            issueDTO.setTags(createdIssue.getTags());
             issueDTO.setAssignee(createdIssue.getAssignee());
             return ResponseEntity.ok(issueDTO);
 
@@ -84,18 +83,24 @@ public class issueController {
             throw new IllegalArgumentException("issueId must not be null");
         }
 
+        if (token == null || !token.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid Authorization header format.");
+        }
+
+        token = token.substring(7); // Extract the token part
         String email = jwtutils.extractEmailFromToken(token);
         if (email == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
         User user = userService.findUserByEmail(email);
-        issueService.deleteIssue(issueId,user.getId());
+        issueService.deleteIssue(issueId, user.getId());
         MessageResponse res = new MessageResponse();
         res.setMessage("Issue deleted");
 
         return ResponseEntity.ok(res);
     }
+
 
     @PutMapping("/{issueId}/assignee/{userId}")
     public ResponseEntity<Issue> addUserToIssue(@PathVariable Long issueId,
