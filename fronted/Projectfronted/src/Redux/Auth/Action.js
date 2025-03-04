@@ -32,7 +32,7 @@ export const login = (userData) => async (dispatch) => {
     try {
       console.log("Sending login request with data:", userData); // Log data before making the API request
   
-      const { data } = await axios.post(getApiUrl("/api/users/login"), userData);
+      const { data } = await axios.post("https://project-demo-image1-tag1.onrender.com/api/users/login", userData);
   
       if (data.jwt) {
         localStorage.setItem("jwt", data.jwt);
