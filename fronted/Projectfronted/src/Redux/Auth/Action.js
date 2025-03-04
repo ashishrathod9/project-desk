@@ -14,7 +14,7 @@ const getApiUrl = (endpoint) => {
 export const registeruser = (userData) => async (dispatch) => {
     dispatch({ type: REGISTER_REQUEST });
     try {
-        const { data } = await axios.post(getApiUrl("/api/users/signup"), userData);
+        const { data } = await axios.post("https://project-demo-image1-tag1.onrender.com/api/users/signup", userData);
 
         if (data.jwt) {
             localStorage.setItem("jwt", data.jwt);
