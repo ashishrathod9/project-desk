@@ -1,0 +1,16 @@
+org\example\project\ChatService.class
+org\example\project\UserService.class
+org\example\project\jwtutils.class
+org\example\project\EmailServiceImpl.class
+org\example\project\Issue.class
+org\example\project\Project.class
+org\example\project\Chat.class
+org\example\project\User.class
+org\example\project\Messages.class
+org\example\project\ChatRepository.class
+org\example\project\Comment.class
+org\example\project\jwtauthfilter.class
+org\example\project\UserRepository.class
+org\example\project\ChatServiceimple.class
+org\example\project\EmailService.class
+org\example\project\AppConfig.class
