@@ -1,11 +1,10 @@
 FROM amazoncorretto:22
-
 LABEL version="1.0"
-
-EXPOSE 8080:8080
+EXPOSE 8080
 
 WORKDIR /app
 
-COPY target/project-0.0.1-SNAPSHOT.jar /app/docker-demo.jar
+# Copy the JAR file from the host's target directory to the container
+COPY build/libs/project-0.0.1-SNAPSHOT.jar /app/docker-demo.jar
 
 ENTRYPOINT ["java", "-jar", "docker-demo.jar"]
