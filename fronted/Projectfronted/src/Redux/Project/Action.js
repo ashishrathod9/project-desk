@@ -42,7 +42,7 @@ export const fetchProjects = ({ category, tag }) => async (dispatch) => {
 export const fetchProjectById = (id) => async (dispatch) => {
   dispatch({ type: FETCH_PROJECT_BY_ID_REQUEST });
   try {
-    const { data } = await api.get(`http://localhost:8080/api/projects/${id}`);
+    const { data } = await api.get(`https://ample-solace-production-90a8.up.railway.app/api/projects/${id}`);
     dispatch({ type: FETCH_PROJECT_BY_ID_SUCCESS, project: data });
   } catch (error) {
     dispatch({ type: FETCH_PROJECT_BY_ID_FAILURE, error: error.message });
@@ -56,7 +56,7 @@ export const createProject = (projectData) => async (dispatch) => {
     // Ensure the data format is correct
     console.log("project", projectData);
 
-    const  data  = await api.post("http://localhost:8080/api/projects", projectData);
+    const  data  = await api.post("https://ample-solace-production-90a8.up.railway.app/api/projects", projectData);
     console.log("project", data);
     dispatch({ type: CREATE_PROJECT_SUCCESS, project: data });
   } catch (error) {
@@ -94,7 +94,7 @@ export const inviteToProject = ({ email, projectid }) => async (dispatch) => {
   try {
     console.log("email :",email);
     
-    const { data } = await api.post("http://localhost:8080/api/projects/invite", {
+    const { data } = await api.post("https://ample-solace-production-90a8.up.railway.app/api/projects/invite", {
       email,
       projectid,
     });
@@ -116,7 +116,7 @@ export const acceptInvitation = ({ token, navigate }) => async (dispatch) => {
   try {
     const Token = (localStorage.getItem("jwt") || "").trim(); // Retrieve the JWT token
 
-    const { data } = await api.get("http://localhost:8080/api/projects/accept-invitation", {
+    const { data } = await api.get("https://ample-solace-production-90a8.up.railway.app/api/projects/accept-invitation", {
       params: {
         token: token,
       },
