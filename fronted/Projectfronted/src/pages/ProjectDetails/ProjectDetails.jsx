@@ -178,7 +178,7 @@ function ProjectDetails() {
       try {
         setLoading(true);
         const token = localStorage.getItem('jwt');
-        const res = await fetch(`http://localhost:8080/api/projects/${id}`, {
+        const res = await fetch(`https://ample-solace-production-90a8.up.railway.app/api/projects/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

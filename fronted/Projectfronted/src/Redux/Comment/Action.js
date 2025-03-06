@@ -9,7 +9,7 @@ export const createComment = (commentData) => async (dispatch) => {
   try {
     const token = (localStorage.getItem("jwt") || "").trim();  // Or retrieve the JWT token however you're storing it
     const response = await axios.post(
-      "http://localhost:8080/api/comments",
+      "https://ample-solace-production-90a8.up.railway.app/api/comments",
       commentData,
       {
         headers: {
@@ -45,7 +45,7 @@ export const deleteComment = (commentId) => async (dispatch) => {
 
   try {
     const token = (localStorage.getItem("jwt") || "").trim();  // Or retrieve the JWT token however you're storing it
-    const response = await axios.delete(`http://localhost:8080/api/comments/${commentId}`, {
+    const response = await axios.delete(`https://ample-solace-production-90a8.up.railway.app/api/comments/${commentId}`, {
       headers: {
         Authorization: `Bearer ${token}`, // Include the token in the request
       },
@@ -71,7 +71,7 @@ export const fetchCommentsByIssueId = (issueId) => async (dispatch) => {
     const token = (localStorage.getItem("jwt") || "").trim();
 
     // Send GET request with the Authorization header
-    const response = await axios.get(`http://localhost:8080/api/comments/${issueId}`, {
+    const response = await axios.get(`https://ample-solace-production-90a8.up.railway.app/api/comments/${issueId}`, {
       headers: {
         Authorization: `Bearer ${token}`, // Include the JWT token
       },

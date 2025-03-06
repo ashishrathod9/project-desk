@@ -8,7 +8,7 @@ export const sendMessage = (messageData) => {
         dispatch({ type: actionTypes.SEND_MESSAGE_REQUEST });
         try {
             const response = await api.post(
-                "http://localhost:8080/api/project/send",
+                "https://ample-solace-production-90a8.up.railway.app/api/project/send",
                 messageData
             );
             dispatch({

@@ -23,7 +23,7 @@ const InviteUser = ({ setIsOpen }) => {
     try {
       const token = (localStorage.getItem("jwt") || "").trim(); // Retrieve JWT token
       const response = await axios.post(
-        'http://localhost:8080/api/projects/invite',
+        'https://ample-solace-production-90a8.up.railway.app/api/projects/invite',
         { email, projectid: id }, // Data payload
         {
           headers: {
