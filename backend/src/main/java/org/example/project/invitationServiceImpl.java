@@ -23,7 +23,8 @@ public class invitationServiceImpl implements invitationService {
 
         invitationRepository.save(i);
 
-        String invitationLink="http://localhost:5173/acceptinvitation?token="+invitationToken;
+        //String invitationLink="http://localhost:5173/acceptinvitation?token="+invitationToken;
+        String invitationLink="https://project-desk-ndtw.vercel.app/acceptinvitation?token="+invitationToken;
         emailService.sendEmailWithToken(email,invitationLink);
     }
 
